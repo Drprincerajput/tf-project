@@ -88,13 +88,11 @@ data "aws_ami" "latest-amz-linux-image" {
     }
 }
 
-# output "aws_ami_id" {
-#     value = data.aws_ami.latest-amz-linux-image
-# }
+
 
 resource "aws_key_pair" "ssh_key" {
     key_name = "server-key"
-    public_key = "${file(var.public_key_location)}"
+    public_key = file(var.public_key_location)
 
 
 }
@@ -108,8 +106,11 @@ resource "aws_instance" "myapp-server" {
     availability_zone = var.avail_zone
     associate_public_ip_address = true
     key_name = aws_key_pair.ssh_key.key_name
-tags = {
-           Name: "${var.env_prefix}-server"
-       }
+
+    user_data = file("ud-script.sh")
+
+    tags = {
+               Name: "${var.env_prefix}-server"
+        }
 
 }
