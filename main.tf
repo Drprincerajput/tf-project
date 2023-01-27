@@ -109,7 +109,7 @@ resource "aws_instance" "myapp-server" {
     associate_public_ip_address = true
     key_name = aws_key_pair.ssh_key.key_name
 tags = {
-           Name: "${var.env_prefix}-server"
+           Name: "${var.env_prefix}-main-server"
        }
 
 }
